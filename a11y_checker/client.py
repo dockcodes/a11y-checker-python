@@ -55,6 +55,7 @@ class A11yCheckerClient:
             self._session = aiohttp.ClientSession()
 
         params = params or {}
+        params = {k: v for k, v in params.items() if v is not None}
 
         if self.api_key:
             params.setdefault("key", self.api_key)
