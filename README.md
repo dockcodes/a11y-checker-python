@@ -84,4 +84,4 @@ asyncio.run(main())
 🤝 Contributing
 Contributions are welcome!
 If you find a bug or want to improve the library, please open an issue or pull request on
-👉 GitHub
+👉 [GitHub](https://github.com/dockcodes/a11y-checker-python/issues)
