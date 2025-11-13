@@ -30,11 +30,11 @@ async def main():
         print(audit_request)
 
         # Get audit
-        audit = await guest.audit(uuid=audit_request.uuid)
+        audit = await guest.audit(uuid=audit_request['uuid'])
         print(audit)
 
         # Delete an audit
-        await guest.delete_audit(audit.uuid)
+        await guest.delete_audit(audit['uuid'])
 
 asyncio.run(main())
 ```
