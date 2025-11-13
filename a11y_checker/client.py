@@ -99,9 +99,9 @@ class A11yCheckerClient:
     ):
         params = {
             "url": url,
-            "sync": sync,
+            "sync": str(sync),
             "lang": lang.value,
-            "extra_data": extra_data,
+            "extra_data": str(extra_data),
             "unique_key": unique_key,
             "recaptcha_token": recaptcha_token,
             "key": key,
@@ -119,7 +119,7 @@ class A11yCheckerClient:
         recaptcha_token: Optional[str] = None,
         key: Optional[str] = None
     ):
-        params = {"uuid": uuid, lang: lang.value, "sync": sync, "extra_data": extra_data, "recaptcha_token": recaptcha_token, "key": key}
+        params = {"uuid": uuid, lang: lang.value, "sync": str(sync), "extra_data": str(extra_data), "recaptcha_token": recaptcha_token, "key": key}
         return await self._request("rescan", params, method="get")
 
     async def audit(
@@ -129,7 +129,7 @@ class A11yCheckerClient:
         extra_data: bool = False,
         key: Optional[str] = None
     ):
-        params = {"uuid": uuid, 'lang': lang.value, "extra_data": extra_data, "key": key}
+        params = {"uuid": uuid, 'lang': lang.value, "extra_data": str(extra_data), "key": key}
         return await self._request("audit", params, method="get")
 
     async def audits(
