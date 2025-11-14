@@ -1,8 +1,9 @@
 import aiohttp
+from typing import TypedDict, Union, Optional, Any, Dict
+from datetime import datetime
 import asyncio
 import time
 from enum import Enum
-from typing import Optional, Any, Dict
 
 class AuditStatus(str, Enum):
     TO_TESTS = "to-tests"
@@ -25,8 +26,19 @@ class Sort(str, Enum):
     LAST_AUDIT_ASC = "last_audit_asc"
     LAST_AUDIT_DESC = "last_audit_desc"
 
+class HistoryFilters(TypedDict, total=False):
+    date_from: Union[str, datetime]
+    date_to: Union[str, datetime]
+
+ALLOWED_FILTERS = set(HistoryFilters.__annotations__.keys())
+
 class A11yCheckerClientAPIError(Exception):
     """API Error"""
+
+def convert_val(value):
+    if isinstance(value, datetime):
+        return value.isoformat() + "Z"
+    return value
 
 class A11yCheckerClient:
     def __init__(self, api_key: Optional[str] = None, base_url: str = "https://a11y-checker.wcag.dock.codes"):
@@ -151,9 +163,17 @@ class A11yCheckerClient:
         page: int = 1,
         per_page: int = 10,
         sort: Sort = Sort.CREATED_AT_DESC,
+        filters: Optional[HistoryFilters] = None,
         key: Optional[str] = None
     ):
         params = {"uuid": uuid, 'page': page, 'per_page': per_page, 'sort': sort.value, "key": key}
+        if filters:
+            for k in filters:
+                if k not in ALLOWED_FILTERS:
+                    raise ValueError(f"Unknown filter: {k}. Allowed filters: {ALLOWED_FILTERS}")
+            for k, v in filters.items():
+                if v is not None:
+                    params[k] = convert_val(v)
         return await self._request("history", params, method="get")
 
     async def delete_audit(self, uuid: str, key: Optional[str] = None):
