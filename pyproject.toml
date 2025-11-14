@@ -1,6 +1,6 @@
 [project]
 name = "a11y-checker"
-version = "1.0.3"
+version = "1.0.4"
 description = "Asynchronous Python client for the accessibility checker API"
 authors = [{ name = "Jacek Labudda", email = 'j.labudda@dock.codes' }]
 readme = "README.md"
